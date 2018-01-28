@@ -4,12 +4,12 @@ import java.util.Scanner;
 import java.util.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.Set;
 
 public class Hangman implements IEvilHangmanGame{
-  private HashMap<int,ArrayList<String>> fullDictionary = new HashMap<int,ArrayList<String>>();
-  private ArrayList<String> workingDictionary = new ArrayList<String>();
-  private boolean[26] guesses = new boolean[26];
+  private HashMap<int,HashSet<String>> fullDictionary = new HashMap<int,HashSet<String>>();
+  private HashSet<String> workingDictionary = new HashSet<String>();
+  private boolean[] guesses = new boolean[26];
 
   public void startGame(File dictionary, int wordLength){
     if(fullDictionary.size() == 0){
@@ -36,5 +36,8 @@ public class Hangman implements IEvilHangmanGame{
     }finally{
       dictionaryReader.close();
     }
+  }
+  public Set<String> makeGuess(char guess) throws GuessAlreadyMadeException{
+    
   }
 }
