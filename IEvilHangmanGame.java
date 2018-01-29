@@ -1,4 +1,4 @@
-package hangman;
+//package hangman;
 
 import java.io.File;
 import java.util.Set;
