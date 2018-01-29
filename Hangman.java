@@ -37,6 +37,11 @@ public class Hangman implements IEvilHangmanGame{
       readInDictionary(dictionary);
       if(fullDictionary.size() == 0)return;
     }
+    if(!fullDictionary.containsKey(wordLength)){
+      System.out.println("Invalid word size");
+      System.out.println("Usage: java Hangman dicitionary wordLength guesses");
+      return;
+    }
     workingDictionary = fullDictionary.get(wordLength);
   }
   private void readInDictionary(File dictionary){
@@ -83,7 +88,7 @@ public class Hangman implements IEvilHangmanGame{
       char[] wordAsArray = word.toCharArray();
       for(int i = 0; i < wordAsArray.length; i++){
         if(wordAsArray[i] == guess){
-          index+= 2 * i;
+          index+= Math.pow(2.0, (double) i);
         }
       }
       if(!sorter.containsKey(index)){
@@ -128,6 +133,7 @@ public class Hangman implements IEvilHangmanGame{
   }
 
   private void runGame(int numGuesses, int wordLength){
+    if(workingDictionary.size() < 1) return;
     char[] myWord = new char[wordLength];
     for(int i = 0; i < wordLength; i++){
       myWord[i] = '-';
@@ -164,13 +170,13 @@ public class Hangman implements IEvilHangmanGame{
         }
       }
       if(!isValid){
-        System.out.println("Invalid guess");
+        System.out.println("Invalid guess\n");
         continue;
       }
       try {
         workingDictionary = (HashSet<String>) makeGuess(theirGuess[0]);
       }catch(GuessAlreadyMadeException game){
-        System.out.println("You already guessed that!");
+        System.out.println("You already guessed that!\n");
         continue;
       }
       int matchCount = 0;
@@ -183,6 +189,7 @@ public class Hangman implements IEvilHangmanGame{
       }
       if(matchCount == 0){
         System.out.println("Sorry, there are no " + theirGuess[0] + "'s");
+        numGuesses--;
       }else if(matchCount == 1){
         System.out.println("Yes, there is 1 " + theirGuess[0]);
       }else{
@@ -195,12 +202,14 @@ public class Hangman implements IEvilHangmanGame{
         }
       }
       if(finished)break;
+      System.out.print("\n");
     }
     if(finished){
       System.out.println("Congratulations, you won!");
+      System.out.println("The word was: " + new String(myWord));
     }else{
       System.out.println("You lose!");
-      System.out.print("The word was: " + new String(myWord));
+      System.out.print("The word was: " + workingDictionary.iterator().next() + '\n');
     }
   }
 }
